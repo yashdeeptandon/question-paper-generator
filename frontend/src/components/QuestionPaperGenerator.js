@@ -3,7 +3,7 @@ import { getQuestions } from "../api";
 import "./QuestionPaperGenerator.css";
 import axios from "axios";
 
-const baseURL = "http://localhost:5000/api";
+const baseURL = "https://question-paper-generator-okl0.onrender.com/api";
 const api = axios.create({ baseURL });
 
 const fetchQuestionsFromBackend = async (setQuestionStore) => {

@@ -8,7 +8,7 @@ const QuestionList = () => {
   const [difficulty, setDifficulty] = useState("");
   const [marks, setMarks] = useState("");
 
-  const baseURL = "http://localhost:5000";
+  const baseURL = "https://question-paper-generator-okl0.onrender.com";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
