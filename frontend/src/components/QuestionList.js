@@ -8,17 +8,7 @@ const QuestionList = () => {
   const [difficulty, setDifficulty] = useState("");
   const [marks, setMarks] = useState("");
 
-  // useEffect(() => {
-  //   const fetchQuestions = async () => {
-  //     try {
-  //       setQuestion("");
-  //     } catch (error) {
-  //       console.error("Error fetching questions:", error);
-  //     }
-  //   };
-
-  //   fetchQuestions();
-  // }, []);
+  const baseURL = "https://question-paper-generator-tbxz.onrender.com";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,7 +24,7 @@ const QuestionList = () => {
     console.log(data);
 
     try {
-      const response = await fetch("http://localhost:5000/api/questions", {
+      const response = await fetch(`${baseURL}/api/questions`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
