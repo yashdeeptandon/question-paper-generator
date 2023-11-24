@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = "https://question-paper-generator-tbxz.onrender.com/api"; // Your backend URL
+const baseURL = "https://question-paper-generator-tbxz.onrender.com"; // Your backend URL
 
 const api = axios.create({
   baseURL,
