@@ -34,16 +34,13 @@ const QuestionList = () => {
     console.log(data);
 
     try {
-      const response = await fetch(
-        "https://guestion-paper-generator.onrender.com/api/questions",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
+      const response = await fetch("http://localhost:5000/api/questions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
       if (response.ok) {
         // Handle success, maybe show a success message or reset the form
