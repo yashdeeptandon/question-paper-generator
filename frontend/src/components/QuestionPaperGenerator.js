@@ -3,11 +3,8 @@ import { getQuestions } from "../api";
 import "./QuestionPaperGenerator.css";
 import axios from "axios";
 
-const frontBaseURL = "https://question-paper-generator-seven.vercel.app";
-
-const frontApi = axios.create({
-  frontBaseURL,
-});
+const baseURL = "http://localhost:5000/api";
+const api = axios.create({ baseURL });
 
 const fetchQuestionsFromBackend = async (setQuestionStore) => {
   try {
@@ -86,7 +83,7 @@ const QuestionPaperGenerator = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await frontApi.post("/generate-paper", {
+      const response = await api.post("/generate-paper", {
         totalMarks,
         easyPercent,
         mediumPercent,

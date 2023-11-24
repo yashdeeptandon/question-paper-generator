@@ -8,7 +8,7 @@ const QuestionList = () => {
   const [difficulty, setDifficulty] = useState("");
   const [marks, setMarks] = useState("");
 
-  const baseURL = "https://question-paper-generator-tbxz.onrender.com";
+  const baseURL = "http://localhost:5000";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
