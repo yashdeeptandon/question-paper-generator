@@ -83,7 +83,7 @@ const QuestionPaperGenerator = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await backendApi.post("/api/generate-paper", {
+      const response = await backendApi.post("/generate-paper", {
         totalMarks,
         easyPercent,
         mediumPercent,
