@@ -34,7 +34,9 @@ export const createQuestion = async (questionData) => {
 // Function to generate a question paper based on criteria
 export const generateQuestionPaper = async (paperData) => {
   try {
-    const response = await frontApi.post("/generate-paper", paperData);
+    const response =
+      await ("https://question-paper-generator-seven.vercel.app/generate-paper",
+      paperData);
     return response;
   } catch (error) {
     throw new Error("Failed to generate question paper: " + error.message);
