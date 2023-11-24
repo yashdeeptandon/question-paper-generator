@@ -11,7 +11,7 @@ app.use(express.json());
 
 // Set up CORS after initializing app
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: "https://question-paper-generator-seven.vercel.app",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
   optionsSuccessStatus: 200,
