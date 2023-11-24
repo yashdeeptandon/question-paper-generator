@@ -9,8 +9,8 @@ const api = axios.create({
 // Function to get all questions from the backend
 export const getQuestions = async () => {
   try {
-    const response = await api.get("/questions");
-    return response.data;
+    const response = await api.get("/api/questions");
+    return response;
   } catch (error) {
     throw new Error("Failed to fetch questions: " + error.message);
   }
@@ -19,8 +19,8 @@ export const getQuestions = async () => {
 // Function to create a new question
 export const createQuestion = async (questionData) => {
   try {
-    const response = await api.post("/questions", questionData);
-    return response.data;
+    const response = await api.post("/api/questions", questionData);
+    return response;
   } catch (error) {
     throw new Error("Failed to create question: " + error.message);
   }
@@ -29,8 +29,8 @@ export const createQuestion = async (questionData) => {
 // Function to generate a question paper based on criteria
 export const generateQuestionPaper = async (paperData) => {
   try {
-    const response = await api.post("/generate-paper", paperData);
-    return response.data;
+    const response = await api.post("/api/generate-paper", paperData);
+    return response;
   } catch (error) {
     throw new Error("Failed to generate question paper: " + error.message);
   }
