@@ -24,7 +24,7 @@ const QuestionList = () => {
     console.log(data);
 
     try {
-      const response = await fetch(`${baseURL}/api/questions`, {
+      const response = await fetch(`${baseURL}/questions`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
