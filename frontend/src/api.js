@@ -29,7 +29,7 @@ export const createQuestion = async (questionData) => {
 // Function to generate a question paper based on criteria
 export const generateQuestionPaper = async (paperData) => {
   try {
-    const response = await api.post("/api/generate-paper", paperData);
+    const response = await api.post("/generate-paper", paperData);
     return response;
   } catch (error) {
     throw new Error("Failed to generate question paper: " + error.message);
