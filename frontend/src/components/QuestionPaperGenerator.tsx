@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { getQuestions } from "../api";
+import { getQuestions } from "../api.js";
 import "./QuestionPaperGenerator.css";
 import axios from "axios";
 
 const baseURL = "https://question-paper-generator-okl0.onrender.com/api";
 const api = axios.create({ baseURL });
 
-const fetchQuestionsFromBackend = async (setQuestionStore) => {
+const fetchQuestionsFromBackend = async (setQuestionStore: any) => {
   try {
     const response = await getQuestions();
     if (Array.isArray(response)) {
@@ -83,7 +83,7 @@ const QuestionPaperGenerator = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.post("/generate-paper", {
+      const response: any = await api.post("/generate-paper", {
         totalMarks,
         easyPercent,
         mediumPercent,

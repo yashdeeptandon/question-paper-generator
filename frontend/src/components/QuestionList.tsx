@@ -56,8 +56,8 @@ const QuestionList = () => {
         <textarea
           id="question"
           name="question"
-          rows="4"
-          cols="50"
+          rows={4}
+          cols={50}
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
         ></textarea>
