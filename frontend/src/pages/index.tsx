@@ -8,7 +8,7 @@ const MainScreen: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    toast.warning("This site is Under Maintenence");
+    toast.warning("This site is Under Maintenance.");
   }, []);
 
   return (
