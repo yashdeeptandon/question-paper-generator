@@ -24,7 +24,7 @@ connectDB();
 // Routes
 app.use("/api", questionRoutes);
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 10000; // Use the Render-provided port
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
