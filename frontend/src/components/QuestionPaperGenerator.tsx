@@ -7,7 +7,7 @@ import { Input } from "./ui/input.js";
 import { Button } from "./ui/button.js";
 import { BorderBeam } from "./magicui/border-beam.js";
 
-const baseURL = "https://question-paper-generator-okl0.onrender.com/api";
+const baseURL = import.meta.env.BASE_URL;
 const api = axios.create({ baseURL });
 
 const fetchQuestionsFromBackend = async (setQuestionStore: any) => {
