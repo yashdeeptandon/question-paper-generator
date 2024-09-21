@@ -1,3 +1,4 @@
+import { CoolMode } from "../components/magicui/cool-mode";
 import { Button } from "../components/ui/button";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -20,12 +21,17 @@ const MainScreen: React.FC = () => {
       </p>
       <section className="w-full h-[200px] flex flex-col p-4 mt-[100px]">
         <div className="w-full flex flex-row gap-2 items-center justify-center">
-          <Button onClick={() => navigate("/generate-paper")}>
-            Generate Question Paper
-          </Button>
-          <Button onClick={() => navigate("/add-questions")}>
-            Add Questions
-          </Button>
+          <CoolMode>
+            <Button onClick={() => navigate("/generate-paper")}>
+              Generate Question Paper
+            </Button>
+          </CoolMode>
+
+          <CoolMode>
+            <Button onClick={() => navigate("/add-questions")}>
+              Add Questions
+            </Button>
+          </CoolMode>
         </div>
       </section>
     </main>
