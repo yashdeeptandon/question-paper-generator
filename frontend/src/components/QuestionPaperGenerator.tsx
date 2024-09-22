@@ -6,9 +6,10 @@ import { Label } from "./ui/label.js";
 import { Input } from "./ui/input.js";
 import { Button } from "./ui/button.js";
 import { BorderBeam } from "./magicui/border-beam.js";
+import { ToastContainer } from "react-toastify";
 
-const baseURL = import.meta.env.BASE_URL;
-const api = axios.create({ baseURL });
+const baseURL = `${import.meta.env.VITE_BASE_URL}/api`; // Your backend URL
+console.log(baseURL); // This should log the value of VITE_BASE_URL
 
 const fetchQuestionsFromBackend = async (setQuestionStore: any) => {
   try {
@@ -87,7 +88,7 @@ const QuestionPaperGenerator = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response: any = await api.post("/generate-paper", {
+      const response: any = await axios.post(`${baseURL}/generate-paper`, {
         totalMarks,
         easyPercent,
         mediumPercent,
@@ -104,6 +105,7 @@ const QuestionPaperGenerator = () => {
 
   return (
     <main className="w-full h-full flex flex-col">
+      <ToastContainer />
       <p className="mt-[50px] pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-center text-8xl font-semibold leading-none text-transparent dark:from-white dark:to-slate-900/10">
         Generate Paper
       </p>

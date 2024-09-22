@@ -1,28 +1,41 @@
+// controllers/questionController.js
+
 const Question = require("../models/questionModel");
 
 // Controller methods for handling questions
 exports.getAllQuestions = async (req, res) => {
   try {
     const questions = await Question.find();
-    res.json(questions);
+    res.success(questions, "Questions retrieved successfully");
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.error(err, "Failed to retrieve questions");
   }
 };
 
 exports.createQuestion = async (req, res) => {
-  const question = new Question({
-    question: req.body.question,
-    subject: req.body.subject,
-    topic: req.body.topic,
-    difficulty: req.body.difficulty,
-    marks: req.body.marks,
+  const { question, subject, topic, difficulty, marks } = req.body;
+
+  // Simple validation
+  if (!question || !subject || !topic || !difficulty || !marks) {
+    return res.error(
+      null,
+      "Missing required fields: question, subject, topic, difficulty, marks",
+      400
+    );
+  }
+
+  const newQuestion = new Question({
+    question,
+    subject,
+    topic,
+    difficulty,
+    marks,
   });
 
   try {
-    const newQuestion = await question.save();
-    res.status(201).json(newQuestion);
+    const savedQuestion = await newQuestion.save();
+    res.success(savedQuestion, "Question created successfully", 201);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.error(err, "Failed to create question", 400);
   }
 };

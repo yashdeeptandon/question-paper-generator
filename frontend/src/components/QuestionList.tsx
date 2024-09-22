@@ -12,6 +12,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import { addQuestionToPaper } from "../api";
+import { toast, ToastContainer } from "react-toastify";
 
 const QuestionList = () => {
   const [question, setQuestion] = useState("");
@@ -19,8 +21,6 @@ const QuestionList = () => {
   const [topic, setTopic] = useState("");
   const [difficulty, setDifficulty] = useState("");
   const [marks, setMarks] = useState("");
-
-  const baseURL = import.meta.env.BASE_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,33 +36,23 @@ const QuestionList = () => {
     console.log(data);
 
     try {
-      const response = await fetch(`${baseURL}/api/questions`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (response.ok) {
-        // Handle success, maybe show a success message or reset the form
-        console.log("Question added successfully!");
-        setQuestion("");
-        setSubject("");
-        setTopic("");
-        setDifficulty("");
-        setMarks("");
-      } else {
-        // Handle error
-        console.error("Failed to add question");
-      }
+      const response = await addQuestionToPaper(data);
+      console.log("Response", response);
+      setQuestion("");
+      setSubject("");
+      setTopic("");
+      setDifficulty("");
+      setMarks("");
     } catch (error) {
       console.error("Error:", error);
+      toast.dismiss();
+      toast.error(error?.message);
     }
   };
 
   return (
     <main className="w-full h-full flex flex-col">
+      <ToastContainer />
       <p className="mt-[50px] pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-center text-8xl font-semibold leading-none text-transparent dark:from-white dark:to-slate-900/10">
         Add Question
       </p>

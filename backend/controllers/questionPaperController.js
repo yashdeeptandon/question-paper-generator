@@ -1,10 +1,37 @@
+// controllers/questionPaperController.js
+
 const express = require("express");
 const router = express.Router();
 const Question = require("../models/questionModel");
+const logger = require("../config/logger");
 
 // Function to generate the question paper based on criteria
 const generateQuestionPaper = async (req, res) => {
   const { totalMarks, easyCount, mediumCount, hardCount } = req.body;
+
+  // Validate the input criteria
+  if (typeof totalMarks !== "number" || totalMarks <= 0) {
+    return res.error(
+      null,
+      "Invalid totalMarks value. It should be a positive number.",
+      400
+    );
+  }
+
+  if (
+    !Number.isInteger(easyCount) ||
+    easyCount < 0 ||
+    !Number.isInteger(mediumCount) ||
+    mediumCount < 0 ||
+    !Number.isInteger(hardCount) ||
+    hardCount < 0
+  ) {
+    return res.error(
+      null,
+      "Invalid count values. easyCount, mediumCount, and hardCount should be non-negative integers.",
+      400
+    );
+  }
 
   try {
     // Fetch all questions from the database
@@ -29,14 +56,29 @@ const generateQuestionPaper = async (req, res) => {
       ...hardQuestions,
     ];
 
+    // Check if the selected questions meet the required total marks
+    const selectedMarks = selectedQuestions.reduce(
+      (total, q) => total + q.marks,
+      0
+    );
+
+    if (selectedMarks !== totalMarks) {
+      return res.error(
+        null,
+        `Selected questions do not add up to the specified total marks. Selected Marks: ${selectedMarks}`,
+        400
+      );
+    }
+
     const questionPaper = {
       totalMarks,
       questions: selectedQuestions,
     };
 
-    res.status(200).json(questionPaper);
+    res.success(questionPaper, "Question paper generated successfully");
   } catch (err) {
-    res.status(500).json({ message: "Error generating question paper" });
+    logger.error(`Error generating question paper: ${err.message}`);
+    res.error(err, "Error generating question paper");
   }
 };
 
