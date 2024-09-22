@@ -14,6 +14,7 @@ import {
 } from "./ui/select";
 import { addQuestionToPaper } from "../api";
 import { toast, ToastContainer } from "react-toastify";
+import { ConfettiButton } from "./magicui/confetti";
 
 const QuestionList = () => {
   const [question, setQuestion] = useState("");
@@ -37,7 +38,7 @@ const QuestionList = () => {
 
     try {
       const response = await addQuestionToPaper(data);
-      console.log("Response", response);
+      console.log("Response", response?.data);
       setQuestion("");
       setSubject("");
       setTopic("");
@@ -130,7 +131,9 @@ const QuestionList = () => {
               />
             </div>
 
-            <Button type="submit">Submit</Button>
+            <div className="flex flex-row justify-center">
+              <ConfettiButton type="submit">Submit</ConfettiButton>
+            </div>
           </div>
         </form>
       </section>

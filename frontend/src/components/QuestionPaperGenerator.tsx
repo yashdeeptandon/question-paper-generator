@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getQuestions } from "../api.js";
+import { getQuestionPaper, getQuestions } from "../api.js";
 import "./QuestionPaperGenerator.css";
 import axios from "axios";
 import { Label } from "./ui/label.js";
@@ -7,6 +7,13 @@ import { Input } from "./ui/input.js";
 import { Button } from "./ui/button.js";
 import { BorderBeam } from "./magicui/border-beam.js";
 import { ToastContainer } from "react-toastify";
+import { Info } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../components/ui/tooltip";
 
 const baseURL = `${import.meta.env.VITE_BASE_URL}/api`; // Your backend URL
 console.log(baseURL); // This should log the value of VITE_BASE_URL
@@ -88,11 +95,11 @@ const QuestionPaperGenerator = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response: any = await axios.post(`${baseURL}/generate-paper`, {
+      const response: any = await getQuestionPaper({
         totalMarks,
-        easyPercent,
-        mediumPercent,
-        hardPercent,
+        easyCount: easyPercent,
+        mediumCount: mediumPercent,
+        hardCount: hardPercent,
       });
 
       setQuestionPaper(response.questions);
@@ -134,41 +141,92 @@ const QuestionPaperGenerator = () => {
             </p>
 
             <div className="flex flex-row gap-2 items-center">
-              <Label htmlFor="easy">Easy: </Label>
+              <Label htmlFor="easy">Easy Questions: </Label>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Info color="hsl(var(--foreground))" size={20} />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Each Easy question comprises of 5 Marks.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+
               <Input
-                className="w-[150px]"
+                className="w-[50px]"
                 type="text"
                 id="easy"
                 name="easy"
                 value={isNaN(easyPercent) ? "" : easyPercent}
                 onChange={(e) => setEasyPercent(parseInt(e.target.value))}
               />
+              {easyPercent ? (
+                <p className="text-xs">{`(Marks: ${easyPercent * 5})`}</p>
+              ) : (
+                <></>
+              )}
             </div>
             <div className="flex flex-row gap-2 items-center">
-              <Label htmlFor="medium">Medium: </Label>
+              <Label htmlFor="medium">Medium Questions: </Label>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Info color="hsl(var(--foreground))" size={20} />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Each Medium question comprises of 10 Marks.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
               <Input
-                className="w-[150px]"
+                className="w-[50px]"
                 type="text"
                 id="medium"
                 name="medium"
                 value={isNaN(mediumPercent) ? "" : mediumPercent}
                 onChange={(e) => setMediumPercent(parseInt(e.target.value))}
               />
+              {mediumPercent ? (
+                <p className="text-xs">{`(Marks: ${mediumPercent * 10})`}</p>
+              ) : (
+                <></>
+              )}
             </div>
             <div className="flex flex-row gap-2 items-center">
-              <Label htmlFor="hard">Hard: </Label>
+              <Label htmlFor="hard">Hard Questions: </Label>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Info color="hsl(var(--foreground))" size={20} />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Each Hard question comprises of 15 Marks.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
               <Input
-                className="w-[150px]"
+                className="w-[50px]"
                 type="text"
                 id="hard"
                 name="hard"
                 value={isNaN(hardPercent) ? "" : hardPercent}
                 onChange={(e) => setHardPercent(parseInt(e.target.value))}
               />
+              {hardPercent ? (
+                <p className="text-xs">{`(Marks: ${hardPercent * 15})`}</p>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
 
-          <Button type="submit">Generate Paper</Button>
+          <Button type="submit" className="flex flex-row">
+            <p>Generate Paper</p>
+            {/* <p>{`(Total: ${
+              easyPercent * 5 + mediumPercent * 10 + hardPercent * 15
+            })`}</p> */}
+          </Button>
         </form>
       </section>
 
