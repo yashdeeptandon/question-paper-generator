@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getQuestionPaper, getQuestions } from "../api.js";
 import "./QuestionPaperGenerator.css";
-import axios from "axios";
 import { Label } from "./ui/label.js";
 import { Input } from "./ui/input.js";
 import { Button } from "./ui/button.js";
@@ -14,9 +13,20 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../components/ui/tooltip";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { QuestionsSliceActions } from "../redux/reducer/question-slice.js";
 
 const baseURL = `${import.meta.env.VITE_BASE_URL}/api`; // Your backend URL
 console.log(baseURL); // This should log the value of VITE_BASE_URL
+
+interface QuestionsProperties {
+  difficulty: string;
+  marks: number;
+  question: string;
+  subject: string;
+  topic: string;
+}
 
 const fetchQuestionsFromBackend = async (setQuestionStore: any) => {
   try {
@@ -38,77 +48,87 @@ const QuestionPaperGenerator = () => {
   const [easyPercent, setEasyPercent] = useState(0);
   const [mediumPercent, setMediumPercent] = useState(0);
   const [hardPercent, setHardPercent] = useState(0);
-  const [questionPaper, setQuestionPaper] = useState([]);
+  const [questionPaper, setQuestionPaper] = useState<QuestionsProperties[]>([]);
   const [questionStore, setQuestionStore] = useState([]);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (questionStore.length === 0) fetchQuestionsFromBackend(setQuestionStore);
   }, [questionStore]);
 
-  const generateQuestionPaper = () => {
-    if (!Array.isArray(questionStore)) {
-      console.error("Error: questionStore is not an array");
-      return;
-    }
+  // const generateQuestionPaper = () => {
+  //   if (!Array.isArray(questionStore)) {
+  //     console.error("Error: questionStore is not an array");
+  //     return;
+  //   }
 
-    const totalEasyCount = Math.min(
-      Math.round((easyPercent / 100) * (totalMarks / 5)),
-      questionStore.filter((q) => q.difficulty === "Easy").length
-    );
+  //   const totalEasyCount = Math.min(
+  //     Math.round((easyPercent / 100) * (totalMarks / 5)),
+  //     questionStore.filter((q) => q.difficulty === "Easy").length
+  //   );
 
-    const totalMediumCount = Math.min(
-      Math.round((mediumPercent / 100) * (totalMarks / 10)),
-      questionStore.filter((q) => q.difficulty === "Medium").length
-    );
+  //   const totalMediumCount = Math.min(
+  //     Math.round((mediumPercent / 100) * (totalMarks / 10)),
+  //     questionStore.filter((q) => q.difficulty === "Medium").length
+  //   );
 
-    const totalHardCount = Math.min(
-      Math.round((hardPercent / 100) * (totalMarks / 15)),
-      questionStore.filter((q) => q.difficulty === "Hard").length
-    );
+  //   const totalHardCount = Math.min(
+  //     Math.round((hardPercent / 100) * (totalMarks / 15)),
+  //     questionStore.filter((q) => q.difficulty === "Hard").length
+  //   );
 
-    const selectedQuestions = [];
+  //   const selectedQuestions = [];
 
-    const selectQuestionsByDifficulty = (difficulty, count, marks) => {
-      const filteredQuestions = questionStore.filter(
-        (q) => q.difficulty === difficulty && q.marks === marks
-      );
-      for (let i = 0; i < count; i++) {
-        if (filteredQuestions.length > 0) {
-          const randomIndex = Math.floor(
-            Math.random() * filteredQuestions.length
-          );
-          selectedQuestions.push(filteredQuestions[randomIndex]);
-          filteredQuestions.splice(randomIndex, 1);
-        } else {
-          break;
-        }
-      }
-    };
+  //   const selectQuestionsByDifficulty = (difficulty, count, marks) => {
+  //     const filteredQuestions = questionStore.filter(
+  //       (q) => q.difficulty === difficulty && q.marks === marks
+  //     );
+  //     for (let i = 0; i < count; i++) {
+  //       if (filteredQuestions.length > 0) {
+  //         const randomIndex = Math.floor(
+  //           Math.random() * filteredQuestions.length
+  //         );
+  //         selectedQuestions.push(filteredQuestions[randomIndex]);
+  //         filteredQuestions.splice(randomIndex, 1);
+  //       } else {
+  //         break;
+  //       }
+  //     }
+  //   };
 
-    selectQuestionsByDifficulty("Easy", totalEasyCount, 5);
-    selectQuestionsByDifficulty("Medium", totalMediumCount, 10);
-    selectQuestionsByDifficulty("Hard", totalHardCount, 15);
+  //   selectQuestionsByDifficulty("Easy", totalEasyCount, 5);
+  //   selectQuestionsByDifficulty("Medium", totalMediumCount, 10);
+  //   selectQuestionsByDifficulty("Hard", totalHardCount, 15);
 
-    setQuestionPaper(selectedQuestions);
-  };
+  //   setQuestionPaper(selectedQuestions);
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response: any = await getQuestionPaper({
+      const response = await getQuestionPaper({
         totalMarks,
         easyCount: easyPercent,
         mediumCount: mediumPercent,
         hardCount: hardPercent,
       });
-
-      setQuestionPaper(response.questions);
-      generateQuestionPaper();
+      console.log("Response:", response);
+      if (response?.status === 200) {
+        setQuestionPaper(response?.data?.questions);
+        dispatch(QuestionsSliceActions.setQuestions(response?.data?.questions));
+        navigate("/generate-paper/questions");
+      }
+      // generateQuestionPaper();
     } catch (error) {
       console.error("Error generating question paper:", error);
+      dispatch(QuestionsSliceActions.toInitialState());
       // Handle error if necessary
     }
   };
+
+  console.log("Question Paper", questionPaper);
 
   return (
     <main className="w-full h-full flex flex-col">
