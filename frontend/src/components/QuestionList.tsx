@@ -4,7 +4,6 @@ import { BorderBeam } from "./magicui/border-beam";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
 import { Input } from "./ui/input";
-import { Button } from "./ui/button";
 import {
   Select,
   SelectContent,

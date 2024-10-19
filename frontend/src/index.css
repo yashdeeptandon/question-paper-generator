@@ -7,12 +7,16 @@ body,
 #root {
   height: 100%;
   width: 100%;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: "Poppins", sans-serif;
+  transition: background-color 0.3s, color 0.3s;
   margin: 0;
   padding: 0;
   @apply font-primary;
 }
 
-/* Custom Variables for Light Mode */
+/* Custom Variables for Light Mode (Default in :root) */
 :root {
   --background: 0 0% 100%;
   --foreground: 240 10% 3.9%;
@@ -41,7 +45,7 @@ body,
   --chart-5: 27 87% 67%;
 }
 
-/* Custom Variables for Dark Mode */
+/* Custom Variables for Dark Mode (applied with .dark class) */
 .dark {
   --background: 240 10% 3.9%;
   --foreground: 0 0% 98%;
@@ -67,4 +71,32 @@ body,
   --chart-3: 30 80% 55%;
   --chart-4: 280 65% 60%;
   --chart-5: 340 75% 55%;
+}
+
+/* Additional theme-specific styling for components can go here */
+
+@layer base {
+  :root {
+    --color-1: 0 100% 63%;
+    --color-2: 270 100% 63%;
+    --color-3: 210 100% 63%;
+    --color-4: 195 100% 63%;
+    --color-5: 90 100% 63%;
+  }
+  .dark {
+    --color-1: 0 100% 63%;
+    --color-2: 270 100% 63%;
+    --color-3: 210 100% 63%;
+    --color-4: 195 100% 63%;
+    --color-5: 90 100% 63%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
