@@ -37,31 +37,65 @@ const generateQuestionPaper = async (req, res) => {
     // Fetch all questions from the database
     const allQuestions = await Question.find();
 
-    // Filter questions based on difficulty and marks
-    const easyQuestions = allQuestions
-      .filter((q) => q.difficulty === "Easy" && q.marks === 5)
-      .slice(0, easyCount);
+    // Helper function to filter questions by difficulty and marks
+    const filterQuestions = (questions, difficulty, marks, count) => {
+      const filteredQuestions = questions.filter(
+        (q) => q.difficulty === difficulty && q.marks === marks
+      );
 
-    const mediumQuestions = allQuestions
-      .filter((q) => q.difficulty === "Medium" && q.marks === 10)
-      .slice(0, mediumCount);
+      // Check if we have enough questions of this type
+      if (filteredQuestions.length < count) {
+        // Throw a specific error if not enough questions are available
+        throw new Error(
+          `Not enough ${difficulty} questions available. Requested: ${count}, Available: ${filteredQuestions.length}. Please add more ${difficulty} questions to the database.`
+        );
+      }
 
-    const hardQuestions = allQuestions
-      .filter((q) => q.difficulty === "Hard" && q.marks === 15)
-      .slice(0, hardCount);
+      // Return the sliced questions
+      return filteredQuestions.slice(0, count);
+    };
 
+    // Filter and select questions for each difficulty level
+    const easyQuestions = filterQuestions(allQuestions, "Easy", 5, easyCount);
+    const mediumQuestions = filterQuestions(
+      allQuestions,
+      "Medium",
+      10,
+      mediumCount
+    );
+    const hardQuestions = filterQuestions(allQuestions, "Hard", 15, hardCount);
+
+    console.log("Selected Easy Questions: ", easyQuestions.length);
+    console.log("Selected Medium Questions: ", mediumQuestions.length);
+    console.log("Selected Hard Questions: ", hardQuestions.length);
+
+    console.log(
+      "Selected Easy Marks: ",
+      easyQuestions.reduce((total, q) => total + q.marks, 0)
+    );
+    console.log(
+      "Selected Medium Marks: ",
+      mediumQuestions.reduce((total, q) => total + q.marks, 0)
+    );
+    console.log(
+      "Selected Hard Marks: ",
+      hardQuestions.reduce((total, q) => total + q.marks, 0)
+    );
+
+    // Combine all selected questions
     const selectedQuestions = [
       ...easyQuestions,
       ...mediumQuestions,
       ...hardQuestions,
     ];
 
-    // Check if the selected questions meet the required total marks
+    // Calculate total marks of selected questions
     const selectedMarks = selectedQuestions.reduce(
       (total, q) => total + q.marks,
       0
     );
 
+    // Check if selected questions match the total marks
     if (selectedMarks !== totalMarks) {
       return res.error(
         null,
@@ -70,6 +104,7 @@ const generateQuestionPaper = async (req, res) => {
       );
     }
 
+    // Create and return the question paper
     const questionPaper = {
       totalMarks,
       questions: selectedQuestions,
@@ -78,7 +113,12 @@ const generateQuestionPaper = async (req, res) => {
     res.success(questionPaper, "Question paper generated successfully");
   } catch (err) {
     logger.error(`Error generating question paper: ${err.message}`);
-    res.error(err, "Error generating question paper");
+    // Return the error message with a 400 status code
+    return res.error(
+      null,
+      `Error generating question paper: ${err.message}`,
+      400
+    );
   }
 };
 
@@ -86,3 +126,4 @@ const generateQuestionPaper = async (req, res) => {
 router.post("/generate-paper", generateQuestionPaper);
 
 module.exports = { generateQuestionPaper };
+``;

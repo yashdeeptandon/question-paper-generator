@@ -28,7 +28,9 @@ interface QuestionsProperties {
   topic: string;
 }
 
-const fetchQuestionsFromBackend = async (setQuestionStore: any) => {
+const fetchQuestionsFromBackend = async (
+  setQuestionStore: (response) => void
+) => {
   try {
     const response = await getQuestions();
     if (Array.isArray(response)) {

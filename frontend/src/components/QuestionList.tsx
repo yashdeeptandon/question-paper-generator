@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./QuestionList.css"; // Make sure to import your CSS file
 import { BorderBeam } from "./magicui/border-beam";
 import { Label } from "./ui/label";
@@ -16,6 +16,12 @@ import { addQuestionToPaper } from "../api";
 import { toast, ToastContainer } from "react-toastify";
 import { ConfettiButton } from "./magicui/confetti";
 
+const VALID_DIFFICULTY_MARKS = {
+  Easy: 5,
+  Medium: 10,
+  Hard: 15,
+};
+
 const QuestionList = () => {
   const [question, setQuestion] = useState("");
   const [subject, setSubject] = useState("");
@@ -23,8 +29,23 @@ const QuestionList = () => {
   const [difficulty, setDifficulty] = useState("");
   const [marks, setMarks] = useState("");
 
+  // Update the marks based on the selected difficulty level
+  useEffect(() => {
+    if (difficulty) {
+      setMarks(VALID_DIFFICULTY_MARKS[difficulty]); // Automatically set marks
+    } else {
+      setMarks(""); // Reset if no difficulty is selected
+    }
+  }, [difficulty]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validation before sending data
+    if (!question || !subject || !topic || !difficulty || !marks) {
+      toast.error("Please fill out all fields correctly.");
+      return;
+    }
 
     const data = {
       question,
@@ -44,6 +65,7 @@ const QuestionList = () => {
       setTopic("");
       setDifficulty("");
       setMarks("");
+      toast.success("Question added successfully!");
     } catch (error) {
       console.error("Error:", error);
       toast.dismiss();
@@ -127,7 +149,7 @@ const QuestionList = () => {
                 id="marks"
                 name="marks"
                 value={marks}
-                onChange={(e) => setMarks(e.target.value)}
+                disabled // Disable the field since it's autofilled
               />
             </div>
 
