@@ -75,61 +75,60 @@ const QuestionList = () => {
   return (
     <main className="w-full h-full flex flex-col">
       <ToastContainer />
-      <p className="mt-[50px] pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-center text-8xl font-semibold leading-none text-transparent dark:from-white dark:to-slate-900/10">
+      <p className="mt-[50px] w-full pointer-events-none bg-gradient-to-b from-black to-gray-300/80 dark:from-white dark:to-slate-900/10 bg-clip-text text-center text-4xl md:text-8xl font-semibold leading-none text-transparent">
         Add Question
       </p>
-      <section className="w-full h-full flex justify-center mt-[100px]">
+
+      <section className="w-full h-[90vh] flex justify-center mt-[30px] md:mt-[100px]">
         <form
           onSubmit={handleSubmit}
-          className="relative w-[40%] min-w-[400px] h-[60%] min-h-[450px] gap-5 border rounded-xl shadow-lg justify-between"
+          className="relative w-[90%] md:w-[40%] min-w-[300px] md:min-w-[400px] h-[40%] md:h-[60%] min-h-[450px] gap-5 border rounded-xl shadow-lg"
         >
           <BorderBeam borderWidth={2} />
-          <div className="w-full h-full p-5 flex flex-col gap-2 justify-between overflow-auto">
-            <div className="flex flex-row gap-2 items-center">
+
+          <div className="w-full h-full p-5 flex flex-col gap-5 overflow-auto">
+            <div className="flex flex-col gap-2 md:flex-row md:items-center">
               <Label htmlFor="question">Type Question:</Label>
               <Textarea
-                className="w-[600px]"
+                className="w-full md:w-[600px]"
                 id="question"
                 name="question"
                 rows={4}
-                cols={50}
                 value={question}
                 onChange={(e) => setQuestion(e.target.value)}
               ></Textarea>
             </div>
 
-            <div className="flex flex-row gap-2 items-center">
+            <div className="flex flex-col gap-2 md:flex-row md:items-center">
               <Label htmlFor="subject">Subject Related To:</Label>
               <Input
-                className="w-[200px]"
+                className="w-full md:w-[200px]"
                 type="text"
                 id="subject"
-                name="subject"
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
               />
             </div>
 
-            <div className="flex flex-row gap-2 items-center">
+            <div className="flex flex-col gap-2 md:flex-row md:items-center">
               <Label htmlFor="topic">Topic:</Label>
               <Input
-                className="w-[200px]"
+                className="w-full md:w-[200px]"
                 type="text"
                 id="topic"
-                name="topic"
                 value={topic}
                 onChange={(e) => setTopic(e.target.value)}
               />
             </div>
 
-            <div className="flex flex-row gap-2 items-center">
+            <div className="flex flex-col gap-2 md:flex-row md:items-center">
               <Label htmlFor="difficulty">Difficulty Level:</Label>
               <Select
                 name="difficulty"
                 value={difficulty}
                 onValueChange={(value) => setDifficulty(value)}
               >
-                <SelectTrigger className="w-[200px]">
+                <SelectTrigger className="w-full md:w-[200px]">
                   <SelectValue placeholder="Select difficulty" />
                 </SelectTrigger>
                 <SelectContent>
@@ -140,19 +139,18 @@ const QuestionList = () => {
               </Select>
             </div>
 
-            <div className="flex flex-row gap-2 items-center">
+            <div className="flex flex-col gap-2 md:flex-row md:items-center">
               <Label htmlFor="marks">Marks:</Label>
               <Input
-                className="w-[200px]"
+                className="w-full md:w-[200px]"
                 type="text"
                 id="marks"
-                name="marks"
                 value={marks}
                 disabled // Disable the field since it's autofilled
               />
             </div>
 
-            <div className="flex flex-row justify-center">
+            <div className="flex flex-col md:flex-row justify-center">
               <ConfettiButton type="submit">Submit</ConfettiButton>
             </div>
           </div>

@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router } from "react-router-dom";
 import { cn } from "./lib/utils";
 import AnimatedGridPattern from "./components/magicui/animated-grid-pattern";
 import AppRoutes from "./Routes";
+import Header from "./components/common/header"; // Import the Header component
 import "./App.css"; // Import your global styles
-import { Moon, Sun } from "lucide-react";
-import { RainbowButton } from "./components/ui/rainbow-button";
 
 const App: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(
@@ -31,51 +29,33 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <Router>
-      <div
-        className={cn(
-          "h-full w-full items-center justify-center overflow-hidden",
-          isDarkMode ? "bg-dark-background" : "bg-light-background"
-        )}
-      >
-        <RainbowButton
-          onClick={toggleTheme}
-          className={cn(
-            "absolute top-4 right-4 p-2 rounded-full transition-all duration-500 ease-in-out transform",
-            isDarkMode
-              ? "bg-gray-200 text-white hover:bg-gray-300"
-              : "bg-gray-800 text-white hover:bg-gray-700",
-            "hover:scale-105 hover:shadow-xl"
-          )}
-          aria-label="Toggle theme"
-        >
-          {/* Rotate Sun/Moon icons based on theme */}
-          <div
-            className={cn(
-              "transition-transform duration-500 ease-in-out",
-              isDarkMode ? "rotate-180" : "rotate-0"
-            )}
-          >
-            {isDarkMode ? <Sun /> : <Moon />}
-          </div>
-        </RainbowButton>
+    <div
+      className={cn(
+        "h-full w-full items-center justify-center overflow-auto",
+        "min-h-screen",
+        isDarkMode ? "bg-dark-background" : "bg-light-background"
+      )}
+    >
+      {/* Header Component */}
+      <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
 
-        <div className="w-full h-full z-10">
-          <AppRoutes />
-        </div>
-
-        <AnimatedGridPattern
-          numSquares={50}
-          maxOpacity={0.1}
-          duration={3}
-          repeatDelay={1}
-          className={cn(
-            "[mask-image:radial-gradient(500px_circle_at_center,white,transparent)]",
-            "inset-x-0 inset-y-[-30%] h-[100%] skew-y-12"
-          )}
-        />
+      {/* Main Content */}
+      <div className="w-full h-[90%] z-10">
+        <AppRoutes />
       </div>
-    </Router>
+
+      {/* Animated Grid Pattern */}
+      <AnimatedGridPattern
+        numSquares={50}
+        maxOpacity={0.1}
+        duration={3}
+        repeatDelay={1}
+        className={cn(
+          "[mask-image:radial-gradient(500px_circle_at_center,white,transparent)]",
+          "inset-x-0 inset-y-[-30%] h-[100%] skew-y-12"
+        )}
+      />
+    </div>
   );
 };
 

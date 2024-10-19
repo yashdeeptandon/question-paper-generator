@@ -135,34 +135,35 @@ const QuestionPaperGenerator = () => {
   return (
     <main className="w-full h-full flex flex-col">
       <ToastContainer />
-      <p className="mt-[50px] pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-center text-8xl font-semibold leading-none text-transparent dark:from-white dark:to-slate-900/10">
+      <p className="mt-[50px] w-full pointer-events-none bg-gradient-to-b from-black to-gray-300/80 dark:from-white dark:to-slate-900/10 bg-clip-text text-center text-4xl md:text-8xl font-semibold leading-none text-transparent">
         Generate Paper
       </p>
-      <section className="w-full flex justify-center mt-[100px]">
+
+      <section className="w-full flex justify-center mt-[30px] md:mt-[100px]">
         <form
           onSubmit={handleSubmit}
-          className="relative w-[40%] min-w-[400px] h-[40%] min-h-[320px] p-5 flex flex-col gap-5 border rounded-xl shadow-lg justify-between"
+          className="relative w-[90%] md:w-[40%] min-w-[300px] h-auto md:h-[40%] min-h-[320px] p-5 flex flex-col gap-5 border rounded-xl shadow-lg justify-between"
         >
           <BorderBeam borderWidth={2} />
-          <div className="flex flex-row gap-2 items-center">
+
+          <div className="flex flex-col gap-2 md:flex-row md:items-center">
             <Label htmlFor="total-marks">Total Marks: </Label>
             <Input
+              className="w-full md:w-[150px]"
               type="text"
-              className="w-[150px]"
               id="total-marks"
-              name="total-marks"
               value={isNaN(totalMarks) ? "" : totalMarks}
               placeholder="Enter total marks"
               onChange={(e) => setTotalMarks(parseInt(e.target.value))}
             />
           </div>
 
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-5">
             <p className="font-semibold text-lg">
               Enter Difficulty Levels of Questions:
             </p>
 
-            <div className="flex flex-row gap-2 items-center">
+            <div className="flex flex-col md:flex-row gap-2 items-center">
               <Label htmlFor="easy">Easy Questions: </Label>
               <TooltipProvider>
                 <Tooltip>
@@ -170,26 +171,21 @@ const QuestionPaperGenerator = () => {
                     <Info color="hsl(var(--foreground))" size={20} />
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>Each Easy question comprises of 5 Marks.</p>
+                    <p>Each Easy question is 5 Marks.</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
 
               <Input
-                className="w-[50px]"
+                className="w-full md:w-[50px]"
                 type="text"
                 id="easy"
-                name="easy"
                 value={isNaN(easyPercent) ? "" : easyPercent}
                 onChange={(e) => setEasyPercent(parseInt(e.target.value))}
               />
-              {easyPercent ? (
-                <p className="text-xs">{`(Marks: ${easyPercent * 5})`}</p>
-              ) : (
-                <></>
-              )}
             </div>
-            <div className="flex flex-row gap-2 items-center">
+
+            <div className="flex flex-col md:flex-row gap-2 items-center">
               <Label htmlFor="medium">Medium Questions: </Label>
               <TooltipProvider>
                 <Tooltip>
@@ -197,25 +193,20 @@ const QuestionPaperGenerator = () => {
                     <Info color="hsl(var(--foreground))" size={20} />
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>Each Medium question comprises of 10 Marks.</p>
+                    <p>Each Medium question is 10 Marks.</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
               <Input
-                className="w-[50px]"
+                className="w-full md:w-[50px]"
                 type="text"
                 id="medium"
-                name="medium"
                 value={isNaN(mediumPercent) ? "" : mediumPercent}
                 onChange={(e) => setMediumPercent(parseInt(e.target.value))}
               />
-              {mediumPercent ? (
-                <p className="text-xs">{`(Marks: ${mediumPercent * 10})`}</p>
-              ) : (
-                <></>
-              )}
             </div>
-            <div className="flex flex-row gap-2 items-center">
+
+            <div className="flex flex-col md:flex-row gap-2 items-center">
               <Label htmlFor="hard">Hard Questions: </Label>
               <TooltipProvider>
                 <Tooltip>
@@ -223,50 +214,25 @@ const QuestionPaperGenerator = () => {
                     <Info color="hsl(var(--foreground))" size={20} />
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>Each Hard question comprises of 15 Marks.</p>
+                    <p>Each Hard question is 15 Marks.</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
               <Input
-                className="w-[50px]"
+                className="w-full md:w-[50px]"
                 type="text"
                 id="hard"
-                name="hard"
                 value={isNaN(hardPercent) ? "" : hardPercent}
                 onChange={(e) => setHardPercent(parseInt(e.target.value))}
               />
-              {hardPercent ? (
-                <p className="text-xs">{`(Marks: ${hardPercent * 15})`}</p>
-              ) : (
-                <></>
-              )}
             </div>
           </div>
 
-          <Button type="submit" className="flex flex-row">
-            <p>Generate Paper</p>
-            {/* <p>{`(Total: ${
-              easyPercent * 5 + mediumPercent * 10 + hardPercent * 15
-            })`}</p> */}
+          <Button type="submit" className="mt-4">
+            Generate Paper
           </Button>
         </form>
       </section>
-
-      {/* <div className="">
-        <h3>Generated Question Paper:</h3>
-        <ul>
-          {questionPaper.length > 0 ? (
-            questionPaper.map((question, index) => (
-              <li key={index}>
-                <strong>{question.question}</strong> - {question.difficulty},
-                Marks: {question.marks}
-              </li>
-            ))
-          ) : (
-            <p>No questions available for the specified criteria.</p>
-          )}
-        </ul>
-      </div> */}
     </main>
   );
 };
