@@ -142,7 +142,7 @@ const QuestionPaperGenerator = () => {
       <section className="w-full flex justify-center mt-[30px] md:mt-[100px]">
         <form
           onSubmit={handleSubmit}
-          className="relative w-[90%] md:w-[40%] min-w-[300px] h-auto md:h-[40%] min-h-[320px] p-5 flex flex-col gap-5 border rounded-xl shadow-lg justify-between"
+          className="relative w-[90%] md:w-[40%] min-w-[300px] h-[550px] md:h-full min-h-[320px] p-5 flex flex-col gap-5 border rounded-xl shadow-lg justify-between"
         >
           <BorderBeam borderWidth={2} />
 
